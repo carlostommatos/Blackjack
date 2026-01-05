@@ -10,6 +10,12 @@ public class Card {
 
 
     // CONSTRUCTOR METHODS
+
+//    public Card() {
+//        this.suit = 'd';
+//        this.rank = Rank.ACE;
+//    }
+
     public Card(char suit, Rank rank) {
         this.suit = suit;
         this.rank = rank;
