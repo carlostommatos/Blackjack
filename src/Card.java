@@ -2,7 +2,7 @@ public class Card {
 
     // DATA FIELDS
     private char suit;
-    public enum Rank {
+    public enum Rank { // public so the list can be used by other classes
         TWO, THREE, FOUR, FIVE, SIX, SEVEN, EIGHT, NINE, TEN,
         JACK, QUEEN, KING, ACE
     }
@@ -11,18 +11,12 @@ public class Card {
 
     // CONSTRUCTOR METHODS
 
-//    public Card() {
-//        this.suit = 'd';
-//        this.rank = Rank.ACE;
-//    }
-
     public Card(char suit, Rank rank) {
         this.suit = suit;
         this.rank = rank;
     }
 
     // ACCESSOR METHODS
-
     public char getSuit() {
         return this.suit;
     }
@@ -34,6 +28,8 @@ public class Card {
     // returns the integer value of a card based on its rank
     public int getValue() {
         switch (this.rank) {
+            case ACE:
+                return 11;
             case TWO:
                 return 2;
             case THREE:
@@ -50,13 +46,15 @@ public class Card {
                 return 8;
             case NINE:
                 return 9;
+
+            // ten, jack, queen, and king are all worth 10
             case TEN:
             case JACK:
             case QUEEN:
             case KING:
                 return 10;
-            case ACE:
-                return 11;
+
+            // if the rank somehow isn't in the list, throw an error
             default:
                 throw new IllegalStateException("Invalid rank: " + this.rank);
         } // switch

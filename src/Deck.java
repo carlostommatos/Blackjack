@@ -1,21 +1,43 @@
+import java.util.Random;
+
+// stack
 public class Deck {
 
+    // DATA FIELDS
     private CardNode top;
+    private char [] suits = {'d', 'h', 'c', 's'};;
+    private Card.Rank [] ranks = Card.Rank.values();
 
+
+    // CONSTRUCTORS
     public Deck() {
-        this.top = null;
+        for (int i = 0; i < this.suits.length; i++) { // i for loop: suits
+            for (int n = 0; n < this.ranks.length; n++) { // n for loop: ranks
+                this.push(this.suits [i], this.ranks [n]); // make a new card with every suit and rank
+            } // i for loop
+        } // n for loop
     }
+
 
     public boolean isEmpty() {
         return (this.top == null);
     }
 
+    // push method using suit and rank (for initial deck)
     public void push(char suit, Card.Rank rank) {
         CardNode newCard = new CardNode(suit, rank);
         newCard.setNext(this.top);
         this.top = newCard;
     }
 
+    // overloaded push method using CardNode (for shuffling)
+    public void push(CardNode card) {
+        card.setNext(this.top);
+        this.top = card;
+    }
+
+    // unlike the regular node class,
+    // returns the whole CardNode object
     public CardNode pop() {
         CardNode popped = this.top;
 
@@ -27,17 +49,23 @@ public class Deck {
             throw new IllegalStateException("Can't pop an empty deck.");
     }
 
+    // TO STRING
     public String toString() {
         String data = "";
         CardNode current = this.top;
         while (current != null) {
-            data = current.toString() + "\n";
+            data += current.toString();
             current = current.getNext();
         }
         return data;
     }
 
-    public int size() {
+    // ACCESSORS
+    public CardNode getTop() {
+        return this.top;
+    }
+
+    public int getSize() {
         if (this.isEmpty())
             return 0;
 
@@ -50,8 +78,37 @@ public class Deck {
         return i;
     }
 
-    public CardNode viewTop() {
-        return this.top;
+
+    // fischer yates shuffle from geeksforgeeks.com
+    public void fyShuffle() {
+
+        // 1. put the cards in an array so they can be shuffled
+        int size = this.getSize();
+        CardNode [] cards = new CardNode [size];
+
+        // 2. shuffle the cards using the fischer yates shuffle
+        for (int i = 0; i < size; i++)
+            cards [i] = this.pop();
+
+        Random random = new Random();
+        for (int i = cards.length - 1; i > 0; i--) {
+            int n = random.nextInt(i + 1);
+            CardNode temp = cards [i];
+            cards [i] = cards [n];
+            cards [n] = temp;
+        }
+
+        // 3. put the shuffled cards back into the deck
+        for (int i = 0; i < size; i++) {
+            this.push(cards [i]);
+        }
+
+
+
     }
+
+
+
+
 
 }
