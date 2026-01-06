@@ -5,7 +5,7 @@ public class Deck {
 
     // DATA FIELDS
     private CardNode top;
-    private char [] suits = {'d', 'h', 'c', 's'};;
+    private char [] suits = {'d', 'h', 'c', 's'};
     private Card.Rank [] ranks = Card.Rank.values();
 
 
