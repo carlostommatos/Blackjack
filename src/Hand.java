@@ -1,9 +1,9 @@
 public class Hand {
 
-    // data fields
+    // data fields0
     private CardNode headCardNode;
 
-    // constructors
+    // construc10tors
     public Hand() {
         this.headCardNode = null;
     }
@@ -18,6 +18,9 @@ public class Hand {
         return this.headCardNode;
     }
 
+    public boolean isEmpty() {
+        return this.headCardNode == null;
+    }
     // mutators
     public void setHeadCardNode(CardNode headCardNode) {
         this.headCardNode = headCardNode;
@@ -26,6 +29,15 @@ public class Hand {
     // behavioural methods
     public void addCardNodeAtFront(char suit, Card.Rank rank) {
         CardNode card = new CardNode(suit, rank);
+        if (this.headCardNode == null)
+            this.headCardNode = card;
+        else {
+            card.setNext(this.headCardNode);
+            this.headCardNode = card;
+        }
+    }
+
+    public void addCardNodeAtFront(CardNode card) {
         if (this.headCardNode == null)
             this.headCardNode = card;
         else {
@@ -47,6 +59,18 @@ public class Hand {
         }
     }
 
+    public void addCardNodeOnEnd(CardNode card) {
+        if (this.headCardNode == null)
+            this.headCardNode = card;
+        else {
+            CardNode current = this.headCardNode;
+            while (current.getNext() != null) {
+                current = current.getNext();
+            }
+            current.setNext(card);
+        }
+    }
+
     public String toString() {
         CardNode current = this.headCardNode;
         String linkStuff = "";
@@ -57,7 +81,7 @@ public class Hand {
         }
 
         if (linkStuff.equals(""))
-            linkStuff = "The deck is empty.";
+            linkStuff = "The deck is clear.";
 
         return linkStuff;
     }
@@ -82,7 +106,7 @@ public class Hand {
         return current;
     }
 
-    public void removeCarNodes(char suit, Card.Rank rank) {
+    public void removeCardNodes(char suit, Card.Rank rank) {
         CardNode current = this.getHeadCardNode();
         do {
             if ((current.getNext().getSuit() == suit) && (current.getNext().getRank() == rank))
@@ -92,7 +116,33 @@ public class Hand {
         while (current.getNext() != null);
     }
 
+    public int sumHand() {
+        int sum = 0;
+        int aces = 0;
+        CardNode current = this.headCardNode;
 
+        while (current != null) {
+//            if (current.getValue() == 11 && sum + 11 > 21)
+//                sum++;
+//            else
 
+                sum = sum + current.getValue();
+            if (current.getRank() == Card.Rank.ACE)
+                aces++;
+            current = current.getNext();
+        }
+        while (aces > 0 && sum > 21) {
+            sum = sum - 10;
+            aces--;
+        }
+
+        if (sum == 0)
+            System.out.println("The hand is clear.");
+        return sum;
+    }
+
+    public void clear() {
+        this.headCardNode = null;
+    }
 
 }

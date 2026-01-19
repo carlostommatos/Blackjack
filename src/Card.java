@@ -64,4 +64,8 @@ public class Card {
         return (this.rank + " of " + this.suit);
     }
 
+    public Card clone() {
+        return new Card(this.suit, this.rank);
+    }
+
 }

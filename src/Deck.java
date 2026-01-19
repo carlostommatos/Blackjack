@@ -39,18 +39,21 @@ public class Deck {
     // unlike the regular node class,
     // returns the whole CardNode object
     public CardNode pop() {
-        CardNode popped = this.top;
+        CardNode popped = this.top.clone();
 
         if (this.top != null) {
             this.top = this.top.getNext();
             return popped;
         }
         else
-            throw new IllegalStateException("Can't pop an empty deck.");
+            throw new IllegalStateException("Can't pop an clear deck.");
     }
 
     // TO STRING
     public String toString() {
+
+        if (this.isEmpty())
+            return "The deck is clear.";
         String data = "";
         CardNode current = this.top;
         while (current != null) {
@@ -103,11 +106,20 @@ public class Deck {
             this.push(cards [i]);
         }
 
-
-
     }
 
+    public void clear() {
+        while (this.isEmpty() == false)
+            this.pop();
+    }
 
+    public void fill() {
+        for (int i = 0; i < this.suits.length; i++) { // i for loop: suits
+            for (int n = 0; n < this.ranks.length; n++) { // n for loop: ranks
+                this.push(this.suits [i], this.ranks [n]); // make a new card with every suit and rank
+            } // i for loop
+        } // n for loop
+    }
 
 
 

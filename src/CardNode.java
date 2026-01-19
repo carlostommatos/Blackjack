@@ -37,7 +37,9 @@ public class CardNode extends Card {
             return (super.toString() + " is on the bottom of the deck.");
     }
 
-
+    public CardNode clone() {
+        return new CardNode(this.getSuit(), this.getRank());
+    }
 
 
 
