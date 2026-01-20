@@ -1,9 +1,9 @@
 public class Hand {
 
-    // data fields0
+    // data fields
     private CardNode headCardNode;
 
-    // construc10tors
+    // constructors
     public Hand() {
         this.headCardNode = null;
     }
@@ -122,9 +122,6 @@ public class Hand {
         CardNode current = this.headCardNode;
 
         while (current != null) {
-//            if (current.getValue() == 11 && sum + 11 > 21)
-//                sum++;
-//            else
 
                 sum = sum + current.getValue();
             if (current.getRank() == Card.Rank.ACE)
