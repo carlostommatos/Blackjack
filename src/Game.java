@@ -62,6 +62,14 @@ public class Game {
 
     // BEHAVIOURAL
 
+    public void pause(int time) {
+        try {
+            Thread.sleep (time);
+        }
+        catch (InterruptedException ie) {
+        }
+    }
+
     // adds a card to the player's hand by popping it from the deck stack
     public void drawCard(Player player) {
         player.getHand().addCardNodeOnEnd(deck.pop());
@@ -87,7 +95,6 @@ public class Game {
     public void play() {
         Scanner sc = new Scanner(System.in); // scanner to get user input
         boolean playAgain = true; // used to repeat the game if the user wants to keep playing
-
         while (playAgain == true) {
             reset(); // reshuffles the deck and clears the player and dealer's hands every run
 
@@ -100,13 +107,18 @@ public class Game {
             }
 
             // show the dealer's first card
+            pause(1000);
             System.out.println("Dealer shows: " + dealerHand.getHeadCardNode());
+            pause(1000);
 
             // player's turn
             System.out.println("\n---- Your Hand ----");
             System.out.println(playerHand); // print the player's hand
+            pause(2000);
+
             System.out.println("Your total: " + playerHand.sumHand()); // print the player's total
             System.out.println("-------------------\n");
+            pause(1000);
 
 
             boolean stand = false; // if the player stands, they stop drawing cards
@@ -118,26 +130,31 @@ public class Game {
                 // user picks hit or stand
                 // makes the string input lowercase and removes whitespace
                 String hitOrStand = sc.nextLine().toLowerCase().trim();
+                pause(1000);
 
                 if (hitOrStand.equals("hit")) { // if the user wants to draw another card
                     System.out.println();
                     drawCard(player); // draw a card
                     System.out.println("---- Your Hand ----");
                     System.out.println(playerHand); // print the player's hand with the added card
+                    pause(2000);
                     System.out.println("Your total: " + playerHand.sumHand()); // print the new total
                     System.out.println("-------------------\n");
+                    pause(2000);
                 }
 
                 else if (hitOrStand.equals("stand")) { // if the user doesn't want to draw more cards
                     stand = true;
                     System.out.println("\nYou stand with " + playerHand.sumHand() + "\n"); // print their total
+                    pause(1000);
                 }
 
                 else { // if the user doesn't type hit or stand, make them type again
                     System.out.println("\n***ERROR: INVALID INPUT***");
                     System.out.println("Please type 'hit' or 'stand'.\n");
                 }
-            }
+            } // while loop
+
 
             if (playerHand.sumHand() > 21) { // if their total is over 21, the dealer wins
                 System.out.println("========================================");
@@ -150,17 +167,23 @@ public class Game {
                 System.out.println("========================================");
                 System.out.println("         DEALER'S TURN");
                 System.out.println("========================================\n");
+                pause(2000);
 
                 // dealer drew 2 cards at the beginning but only revealed one
                 System.out.println("Dealer reveals hidden card...");
+                pause(2000);
                 System.out.println(dealerHand); // reveal the dealer's hand with the second card revealed
+                pause(2000);
                 System.out.println("Dealer total: " + dealerHand.sumHand() + "\n"); // print the dealer's total
+                pause(1000);
 
                 // the dealer has to keep drawing while his hand has less than 17
                 while (dealerHand.sumHand() < 17) {
                     System.out.println("Dealer must hit...");
+                    pause(1000);
                     drawCard(dealer); // the dealer draws a card
                     System.out.println("Dealer total: " + dealerHand.sumHand() + "\n"); // print the dealer's total
+                    pause(2000);
                 }
 
                 if (dealerHand.sumHand() > 21) { // if the dealer goes over 21, you win
@@ -180,10 +203,13 @@ public class Game {
                     System.out.println("========================================");
                     System.out.println("            RESULTS");
                     System.out.println("========================================");
+                    pause(2000);
                     // print the player and dealer's totals
                     System.out.println("Your total:   " + playerTotal);
+                    pause(2000);
                     System.out.println("Dealer total: " + dealerTotal);
                     System.out.println("========================================\n");
+                    pause(2000);
 
                     // if the player scored higher than the dealer, the player wins
                     if (playerTotal > dealerTotal) {
@@ -201,9 +227,11 @@ public class Game {
             } // outer outer else
 
             // ask the user if they want to play again
+            pause(2000);
             System.out.print("Play again? (y/n): ");
             // make their answer a lowercase string and remove whitespace
             String yn = sc.nextLine().toLowerCase().trim();
+            pause(1000);
             // if the user says yes, repeat the game
             if (yn.equals("y"))
                 playAgain = true;

@@ -32,9 +32,9 @@ public class CardNode extends Card {
 
     public String toString() {
         if (this.next != null)
-            return (super.toString() + " is on top of \n");
+            return (super.toString());
         else
-            return (super.toString() + " is on the bottom of the deck.");
+            return (super.toString());
     }
 
     public CardNode clone() {

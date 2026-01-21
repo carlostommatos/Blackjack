@@ -61,7 +61,7 @@ public class Card {
     } // getValue method
 
     public String toString() {
-        return (this.rank + " of " + this.suit);
+        return (this.rank + " of " + this.suit + "\n");
     }
 
     public Card clone() {

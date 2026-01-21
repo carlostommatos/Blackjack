@@ -5,8 +5,6 @@ public class BlackjackClient {
         Game game = new Game();
         game.play();
 
-
-
     }
 
 }
