@@ -11,8 +11,8 @@ public class Deck {
 
     // DATA FIELDS
     private CardNode top;
-    private char [] suits = {'d', 'h', 'c', 's'};
-    private Card.Rank [] ranks = Card.Rank.values();
+    private char [] suits = {'d', 'h', 'c', 's'}; // diamond, heart, club, spade
+    private Card.Rank [] ranks = Card.Rank.values(); // make an array of the card ranks from the enum
 
 
     // CONSTRUCTORS
@@ -24,7 +24,7 @@ public class Deck {
         } // n for loop
     }
 
-
+    // returns whether or not the deck is empty
     public boolean isEmpty() {
         return (this.top == null);
     }
@@ -32,26 +32,26 @@ public class Deck {
     // push method using suit and rank (for initial deck)
     public void push(char suit, Card.Rank rank) {
         CardNode newCard = new CardNode(suit, rank);
-        newCard.setNext(this.top);
-        this.top = newCard;
+        newCard.setNext(this.top); // make the new card point to the current top
+        this.top = newCard; // make the new card the top card
     }
 
     // overloaded push method using CardNode (for shuffling)
     public void push(CardNode card) {
-        card.setNext(this.top);
-        this.top = card;
+        card.setNext(this.top);// make the new card point to the current top
+        this.top = card; // make the new card the top card
     }
 
     // unlike the regular node class,
     // returns the whole CardNode object
     public CardNode pop() {
-        CardNode popped = this.top.clone();
+        CardNode popped = this.top.clone(); // make a copy of the top card
 
-        if (this.top != null) {
-            this.top = this.top.getNext();
+        if (this.top != null) { // if there is a card to pop
+            this.top = this.top.getNext(); // make the next card the top card
             return popped;
         }
-        else
+        else // if there isn't a card to pop
             throw new IllegalStateException("Can't pop an clear deck.");
     }
 
@@ -62,7 +62,7 @@ public class Deck {
             return "The deck is clear.";
         String data = "";
         CardNode current = this.top;
-        while (current != null) {
+        while (current != null) { // traverse
             data += current.toString();
             current = current.getNext();
         }
@@ -74,13 +74,14 @@ public class Deck {
         return this.top;
     }
 
+    // how many cards are in the array
     public int getSize() {
-        if (this.isEmpty())
+        if (this.isEmpty()) // if the deck is empty
             return 0;
 
-        int i = 1;
+        int i = 1; // minimum 1 card
         CardNode current = this.top;
-        while (current.getNext() != null) {
+        while (current.getNext() != null) { // traverse
             i++;
             current = current.getNext();
         }
@@ -114,6 +115,7 @@ public class Deck {
 
     }
 
+    // clear all card from the deck by popping them
     public void clear() {
         while (this.isEmpty() == false)
             this.pop();

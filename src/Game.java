@@ -330,13 +330,14 @@ public class Game {
             // make their answer a lowercase string and remove whitespace
             String yn = sc.nextLine().toLowerCase().trim();
 
-            while (!yn.equals("y") && !yn.equals("n")) {
+            while (! yn.equals("y") && ! yn.equals("n")) { // repeat until the user types in y o rn
                 System.out.println("\n***ERROR: INVALID INPUT***");
                 System.out.println("Please type 'y' or 'n'\n");
                 yn = sc.nextLine().toLowerCase().trim();
             }
 
             pause(1000);
+
             // if the user says yes, repeat the game
             if (yn.equals("y"))
                 playAgain = true;
