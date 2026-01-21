@@ -1,3 +1,4 @@
+import java.io.*;
 import java.util.Scanner;
 
 public class Game {
@@ -15,6 +16,8 @@ public class Game {
     private Player player = new Player(playerHand);
     private Player dealer = new Player(dealerHand);
 
+    private int balance = 1000;
+    private final String saveFile = "balance.txt";
 
 
     // ACCESSORS
@@ -35,6 +38,10 @@ public class Game {
     }
     public Player getDealer() {
         return this.dealer;
+    }
+
+    public int getBalance() {
+        return this.balance;
     }
 
 
@@ -58,9 +65,30 @@ public class Game {
         this.dealer = dealer;
     }
 
+    public void setBalance(int balance) {
+        this.balance = balance;
+    }
+
 
 
     // BEHAVIOURAL
+
+    // runs at the beginning of the game and makes the balance the number in the file
+    public void loadBalance() throws IOException {
+        File file = new File(saveFile);
+        Scanner sc = new Scanner(file);
+        while (sc.hasNextInt()) {
+            this.balance = sc.nextInt();
+        }
+
+    }
+
+    public void saveBalance() throws IOException {
+        PrintWriter writer = new PrintWriter(new FileWriter(saveFile));
+        writer.println(this.balance);
+        writer.close();
+    }
+
 
     public void pause(int time) {
         try {
@@ -87,16 +115,46 @@ public class Game {
 
         System.out.println("\n========================================");
         System.out.println("      WELCOME TO BLACKJACK!");
+        System.out.println("Your balance: $" + this.balance);
         System.out.println("========================================\n");
     } // reset method
 
 
     // this is the only method that the client needs to play the game
-    public void play() {
+    public void play() throws IOException {
         Scanner sc = new Scanner(System.in); // scanner to get user input
         boolean playAgain = true; // used to repeat the game if the user wants to keep playing
         while (playAgain == true) {
             reset(); // reshuffles the deck and clears the player and dealer's hands every run
+
+            // check if the player has any money left
+            if (this.balance <= 0) {
+                System.out.println("You're out of money! Game over.");
+                break; // end the game by breaking out of the while loop
+            }
+
+            // let the user make a bet
+            int bet = 0;
+            boolean validBet = false;
+            while (validBet == false) {
+                System.out.print("How much would you like to bet? $");
+                // take the input as a string just in case they don't type a number
+                bet = sc.nextInt(); // take the best as a string
+                sc.nextLine(); // fixes the scanner error
+
+                    if (bet > 0 && bet <= this.balance) {
+                        validBet = true;
+                    }
+                    else if (bet > this.balance) {
+                        System.out.println("\n***ERROR: INSUFFICIENT FUNDS***");
+                        System.out.println("Your balance is $" + this.balance + "\n");
+                    }
+                    else {
+                        System.out.println("\n***ERROR: INVALID BET***");
+                        System.out.println("Please bet a positive number.\n");
+                    }
+
+            }
 
             // deal initial cards, two for each player
             System.out.println("Dealing initial cards...\n");
@@ -160,6 +218,9 @@ public class Game {
                 System.out.println("========================================");
                 System.out.println("BUST! You went over 21.");
                 System.out.println("Dealer wins.");
+                this.balance = balance - bet; // lose the bet
+                System.out.println("You lost $" + bet);
+                System.out.println("New balance: $" + this.balance);
                 System.out.println("========================================\n");
             }
 
@@ -189,6 +250,9 @@ public class Game {
                 if (dealerHand.sumHand() > 21) { // if the dealer goes over 21, you win
                     System.out.println("========================================");
                     System.out.println("Dealer busts! YOU WIN!");
+                    this.balance = balance + bet; // win the bet
+                    System.out.println("You won $" + bet + "!");
+                    System.out.println("New balance: $" + this.balance);
                     System.out.println("========================================\n");
                 }
 
@@ -214,43 +278,57 @@ public class Game {
                     // if the player scored higher than the dealer, the player wins
                     if (playerTotal > dealerTotal) {
                         System.out.println("YOU WIN!\n");
+                        this.balance = balance + bet; // win the bet
+                        System.out.println("You won $" + bet + "!");
+                        System.out.println("New balance: $" + this.balance);
                     }
                     // if the dealer scored higher than the player, the dealer wins
                     else if (dealerTotal > playerTotal) {
                         System.out.println("Dealer wins.\n");
+                        this.balance = balance - bet; // lose the bet
+                        System.out.println("You lost $" + bet);
+                        System.out.println("New balance: $" + this.balance + "\n");
                     }
                     // if the dealer and the player scored the same, it is a tie (push)
                     else {
                         System.out.println("PUSH! It's a tie.\n");
+                        System.out.println("Your balance remains: $" + this.balance + "\n");
                     } // inner else
                 } // outer else
             } // outer outer else
+
+            saveBalance(); // save the balance after each round to the txt file
 
             // ask the user if they want to play again
             pause(2000);
             System.out.print("Play again? (y/n): ");
             // make their answer a lowercase string and remove whitespace
             String yn = sc.nextLine().toLowerCase().trim();
+
+            while (!yn.equals("y") && !yn.equals("n")) {
+                System.out.println("\n***ERROR: INVALID INPUT***");
+                System.out.println("Please type 'y' or 'n'\n");
+                yn = sc.nextLine().toLowerCase().trim();
+            }
+
             pause(1000);
             // if the user says yes, repeat the game
             if (yn.equals("y"))
                 playAgain = true;
-            // if the user says no, stop the game
-            else if (yn.equals("n"))
+                // if the user says no, stop the game
+            else if (yn.equals("n")) {
                 playAgain = false;
-            // if the user types something else, make them type a new answer
-            else {
-                System.out.println("\n***ERROR: INVALID INPUT***");
-                System.out.println("Please type 'y' or 'n'\n");
-                // TODO: MAKE IT LOOP
-            } // else
+            }
+
+
         } // while loop
 
         // print a kind message if the user doesn't want to play anymore
         System.out.println("\n========================================");
         System.out.println("       Thanks for playing!");
+        System.out.println("       Final balance: $" + this.balance);
         System.out.println("========================================\n");
-    }
+    } // play method
 
 
 }
