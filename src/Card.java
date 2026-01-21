@@ -1,3 +1,10 @@
+/*
+Card
+parent of the CarNode class
+Carlos Matos
+Wednesday, January 21, 2026
+ */
+
 public class Card {
 
     // DATA FIELDS

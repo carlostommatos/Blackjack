@@ -1,3 +1,10 @@
+/*
+Hand
+linked list that holds CardNodes
+Carlos Matos
+Wednesday, January 21, 2026
+ */
+
 public class Hand {
 
     // data fields

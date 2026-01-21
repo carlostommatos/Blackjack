@@ -1,3 +1,9 @@
+/*
+Game
+runs the blackjack game when ran from a client
+Carlos Matos
+Wednesday, January 21, 2026
+ */
 import java.io.*;
 import java.util.Scanner;
 
@@ -16,8 +22,7 @@ public class Game {
     private Player player = new Player(playerHand);
     private Player dealer = new Player(dealerHand);
 
-    private int balance = 1000;
-    private final String saveFile = "balance.txt";
+    private int balance;
 
 
     // ACCESSORS
@@ -74,22 +79,37 @@ public class Game {
     // BEHAVIOURAL
 
     // runs at the beginning of the game and makes the balance the number in the file
+    // allows scores to be saved between games
     public void loadBalance() throws IOException {
-        File file = new File(saveFile);
-        Scanner sc = new Scanner(file);
-        while (sc.hasNextInt()) {
-            this.balance = sc.nextInt();
+        File file = new File("balance.txt");
+        // from the note in case the file doesn't exist
+        try {
+            file.createNewFile ();
         }
+
+        catch (IOException e) {
+        }
+
+        Scanner sc = new Scanner(file);
+        // gives 1000 at the start of the game if
+        // its the first time playing or the user hsa no money
+        while (sc.hasNextInt()) {
+            balance = sc.nextInt();
+        }
+
+        if (balance <= 0)
+            balance = 1000;
 
     }
 
+    // used to save the balance at the end of every game by writing to the file
     public void saveBalance() throws IOException {
-        PrintWriter writer = new PrintWriter(new FileWriter(saveFile));
+        PrintWriter writer = new PrintWriter(new FileWriter("balance.txt"));
         writer.println(this.balance);
         writer.close();
     }
 
-
+    // addds a pause for suspense
     public void pause(int time) {
         try {
             Thread.sleep (time);
@@ -105,10 +125,12 @@ public class Game {
 
     // clears player and dealer hands and reshuffles the deck
     // called at the beginning of every game
-    public void reset() {
+    public void reset() throws IOException {
+        // clear the hands
         playerHand.clear();
         dealerHand.clear();
 
+        // clear the deck, fill it again, and reshuffle
         deck.clear();
         deck.fill();
         deck.fyShuffle();
@@ -122,8 +144,11 @@ public class Game {
 
     // this is the only method that the client needs to play the game
     public void play() throws IOException {
+
         Scanner sc = new Scanner(System.in); // scanner to get user input
         boolean playAgain = true; // used to repeat the game if the user wants to keep playing
+        loadBalance();
+
         while (playAgain == true) {
             reset(); // reshuffles the deck and clears the player and dealer's hands every run
 

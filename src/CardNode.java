@@ -1,5 +1,11 @@
 
-// like a node, but a card
+/*
+CardNode
+child of the Card class. Nodes for the Deck stack and Hand linked list
+Carlos Matos
+Wednesday, January 21, 2026
+ */
+
 public class CardNode extends Card {
 
     // DATA FIELDS
@@ -30,6 +36,7 @@ public class CardNode extends Card {
     }
 
 
+    // BEHAVIOURAL
     public String toString() {
         if (this.next != null)
             return (super.toString());

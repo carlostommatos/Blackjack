@@ -1,5 +1,11 @@
 import java.util.Random;
 
+/*
+Deck
+a 52 card deck
+Carlos Matos
+Wednesday, January 21, 2026
+ */
 // stack
 public class Deck {
 
